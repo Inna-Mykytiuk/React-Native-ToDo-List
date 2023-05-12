@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -6,10 +7,30 @@ import {
   TextInput,
   KeyboardAvoidingView,
   TouchableOpacity,
+  ScrollView,
+  ImageBackground,
+  // Keyboard,
 } from "react-native";
 import Task from "./src/components/Task";
 
 export default function App() {
+  const [task, setTask] = useState("");
+  const [taskItems, setTaskItems] = useState([]);
+
+  const addTask = () => {
+    // Keyboard.dismiss();
+    // if (!task) return;
+
+    setTaskItems([...taskItems, task]);
+    setTask("");
+  };
+
+  const completeTask = (index) => {
+    let itemsCopy = [...taskItems];
+    itemsCopy.splice(index, 1);
+    setTaskItems(itemsCopy);
+  };
+
   const {
     container,
     taskWrapper,
@@ -19,32 +40,60 @@ export default function App() {
     input,
     addWrapper,
     addText,
+    wrapper,
+    image,
   } = styles;
 
   return (
     <View style={container}>
-      <StatusBar style='auto' />
-      <View style={taskWrapper}>
-        <Text style={sectionTitle}>Today's task</Text>
-      </View>
-      <View style={items}>
-        <Task text={"Task 1"} />
-        <Task text={"Task 2"} />
-        <Task text={"Task 3"} />
-        <Task text={"Task 4"} />
-        <Task text={"Task 5"} />
-      </View>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={writeTaskWrapper}
+      <ImageBackground
+        style={image}
+        source={require("./assets/notebook-bg.jpg")}
       >
-        <TextInput style={input} placeholder={"Write Task"} />
-        <TouchableOpacity>
-          <View style={addWrapper}>
-            <Text style={addText}>+</Text>
+        <StatusBar style='auto' />
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}
+          keyboardShouldPersistTaps='handled'
+        >
+          <View style={wrapper}>
+            <View style={taskWrapper}>
+              <Text style={sectionTitle}>Today's task</Text>
+            </View>
+            <View style={items}>
+              {taskItems.map((item, index) => {
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => completeTask(index)}
+                  >
+                    <Task text={item} />
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
           </View>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
+        </ScrollView>
+        <View style={wrapper}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={writeTaskWrapper}
+          >
+            <TextInput
+              style={input}
+              placeholder={"Write Task"}
+              onChangeText={(text) => setTask(text)}
+              value={task}
+            />
+            <TouchableOpacity onPress={() => addTask()}>
+              <View style={addWrapper}>
+                <Text style={addText}>+</Text>
+              </View>
+            </TouchableOpacity>
+          </KeyboardAvoidingView>
+        </View>
+      </ImageBackground>
     </View>
   );
 }
@@ -53,26 +102,38 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#E8EAED",
+    justifyContent: "space-between",
+  },
+  wrapper: {
+    marginHorizontal: 20,
   },
   taskWrapper: {
     paddingTop: 80,
     paddingHorizontal: 20,
   },
   sectionTitle: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: "bold",
+    color: "#000",
+    backgroundColor: "#fff",
+    opacity: 0.6,
+    borderRadius: 60,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+
     // textAlign: "center",
   },
   items: {
     marginTop: 40,
   },
   writeTaskWrapper: {
-    position: "absolute",
-    bottom: 60,
+    // position: "absolute",
+    // bottom: 60,
     width: "100%",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
+    marginBottom: 40,
   },
   input: {
     paddingVertical: 15,
@@ -92,5 +153,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 30,
   },
 });

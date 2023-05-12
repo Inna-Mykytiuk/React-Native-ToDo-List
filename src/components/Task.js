@@ -18,7 +18,7 @@ export default Task;
 
 const styles = StyleSheet.create({
   item: {
-    marginHorizontal: 20,
+    // marginHorizontal: 20,
     backgroundColor: "#fff",
     padding: 15,
     borderRadius: 10,
@@ -49,7 +49,8 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 5,
-    // borderWidth: 2,
-    backgroundColor: "#55BCF6",
+    borderWidth: 2,
+    borderColor: "#55BCF6",
+    // backgroundColor: "#55BCF6",
   },
 });
