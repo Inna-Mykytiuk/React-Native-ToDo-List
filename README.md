@@ -11,4 +11,5 @@ When a task is tapped, it is removed from the list.
 Some additional features you might consider adding to your app could include:
 ####
 You can view the application using the Expo program installed locally on your computer, or Expo go from your mobile device.
+You can also follow the link in the profile header
 ![preview](https://github.com/Inna-Mykytiuk/React-Native-ToDo-List/blob/main/assets/ToDo.jpg)
