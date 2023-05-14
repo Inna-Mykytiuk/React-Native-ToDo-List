@@ -120,8 +120,6 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     paddingHorizontal: 20,
     paddingVertical: 10,
-
-    // textAlign: "center",
   },
   items: {
     marginTop: 40,
